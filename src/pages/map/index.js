@@ -69,11 +69,8 @@ const Map = (props) => {
     setShowDrawer((currentState) => ({...currentState, [drawer]:toggleState}));
   }
 
-  const onVolunteerClick = () => {
-    setShowDrawer({
-      mapDrawer: false,
-      volunteerDrawer: true
-    })
+  const showHideDrawer = (drawerObj) => (evt) => {
+    setShowDrawer((currentState) => ({...currentState, ...drawerObj}));
   }
   
   const onMapClick = React.useCallback((event) => {
@@ -104,7 +101,7 @@ const Map = (props) => {
         <img src={logo} className={"logo"} alt="Relief today"/>
         <h3 className={"logoTitle"}>Relief Today</h3>
       </div>
-      <SeekerItems onVolunteerClick={onVolunteerClick} {...props} toggleDrawer={toggleDrawer} showDrawer={showDrawer}></SeekerItems>
+      <SeekerItems showHideDrawer={showHideDrawer} {...props} toggleDrawer={toggleDrawer} showDrawer={showDrawer}></SeekerItems>
       <Search panTo={panTo}></Search>
       <ActionButton {...props}></ActionButton>
       <Locate panTo={panTo}></Locate>
@@ -147,8 +144,8 @@ const SeekerItems = (props) => {
           <IconButton className={"menuButton"} edge="start" color="inherit" aria-label="menu" onClick={props.toggleDrawer("mapDrawer", true)}>
             <MenuIcon />
           </IconButton>
-          <MapDrawer onVolunteerClick={props.onVolunteerClick} showDrawer={props.showDrawer.mapDrawer} toggleDrawer={props.toggleDrawer}></MapDrawer>
-          <VolunteerDrawer showDrawer={props.showDrawer.volunteerDrawer} toggleDrawer={props.toggleDrawer}></VolunteerDrawer>
+          <MapDrawer showHideDrawer={props.showHideDrawer} showDrawer={props.showDrawer.mapDrawer} toggleDrawer={props.toggleDrawer}></MapDrawer>
+          <VolunteerDrawer showHideDrawer={props.showHideDrawer} showDrawer={props.showDrawer.volunteerDrawer} toggleDrawer={props.toggleDrawer}></VolunteerDrawer>
         </React.Fragment>
       }
     </React.Fragment>

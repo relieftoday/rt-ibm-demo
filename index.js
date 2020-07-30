@@ -15,7 +15,9 @@ app.use('/api', routes);
 
 // website
 app.use(express.static('build'));
-mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
+
+// Db connect
+// mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let PORT = process.env.NODE_ENV === 'production'? 80 : 3001;
 

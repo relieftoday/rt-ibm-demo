@@ -34,7 +34,7 @@ const MapDrawer = (props) => {
         <h3 className={"logoTitle"}>Relief Today</h3>
       </div>
       <List style={{width: 250}}>
-        <ListItem button onClick={props.onVolunteerClick}>
+        <ListItem button onClick={props.showHideDrawer({mapDrawer: false, volunteerDrawer: true})}>
           <ListItemIcon><GroupWorkIcon /></ListItemIcon>
           <ListItemText primary="Volunteer"/>
         </ListItem>
