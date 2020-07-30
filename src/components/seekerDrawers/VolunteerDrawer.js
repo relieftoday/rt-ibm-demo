@@ -2,16 +2,12 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Link } from '@material-ui/core';
 import { AppBar, Button, Toolbar, IconButton, Typography } from '@material-ui/core';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from '@material-ui/core';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, TextField} from '@material-ui/core';
+import MuiAlert from '@material-ui/lab/Alert';
 import { FormControlLabel, Checkbox } from '@material-ui/core';
-import { Grid, Container } from '@material-ui/core';
-import { Link as RouterLink } from 'react-router-dom';
-import GroupWorkIcon from '@material-ui/icons/GroupWork';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import MapIcon from '@material-ui/icons/Map';
-import logo from '../../assets/marker.png';
+import { Avatar, Container } from '@material-ui/core';
+import CheckIcon from '@material-ui/icons/Check';
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
 
@@ -48,6 +44,7 @@ const VolunteerDrawer = (props) => {
   const classes = useStyles();
   const [volunteerInfo, setVolunteerInfo] = React.useState({
     name: '',
+    phone: '',
     isWilling: false,
     skills: '',
     isMedico: false
@@ -71,6 +68,19 @@ const VolunteerDrawer = (props) => {
     console.log(document.getElementById('vol_name').value);
     console.log(document.getElementById('vol_info').value);
     console.log(document.getElementById('vol_medico').checked);
+    setVolunteerInfo({
+      name: document.getElementById('vol_name').value || 'John Doe',
+      phone: document.getElementById('vol_phone').value || '+91-8909876789',
+      isWilling: true,
+      skills: document.getElementById('vol_info').value || 'Civil engineer by profession.',
+      isMedico: document.getElementById('vol_medico').checked
+    })
+    
+    setDialogs({
+      volunteerDialog: false,
+      sosDialog: false,
+      communityDialog: false
+    })
   }
 
   const onVolunteerClose = () => {
@@ -81,21 +91,30 @@ const VolunteerDrawer = (props) => {
     })
   }
 
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    props.hideSnackbar(false);
+  };
+
   let agencyList = [
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
-    {agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/200", volunteered: false},
+    {agency_id:"1", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/10/200", volunteered: false},
+    {agency_id:"2", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/26/200", volunteered: true},
+    {agency_id:"3", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/330/200", volunteered: true},
+    {agency_id:"4", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/401/200", volunteered: true},
+    {agency_id:"5", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/546/200", volunteered: false},
+    {agency_id:"6", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/698/200", volunteered: false},
+    {agency_id:"7", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/712/200", volunteered: false},
+    {agency_id:"8", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/865/200", volunteered: false},
+    {agency_id:"9", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/990/200", volunteered: false},
+    {agency_id:"10", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/103/200", volunteered: false},
+    {agency_id:"11", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/118/200", volunteered: false},
+    {agency_id:"12", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/129/200", volunteered: false},
+    {agency_id:"13", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/134/200", volunteered: false},
+    {agency_id:"14", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/143/200", volunteered: false},
+    {agency_id:"15", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/151/200", volunteered: false},
   ]
   return (
     <React.Fragment>
@@ -112,37 +131,41 @@ const VolunteerDrawer = (props) => {
           </Toolbar>
         </AppBar>
 
-        <Container className={classes.wishContainer}>
-          <Button color="primary" onClick={onVolunteerOpen}>Do you wish to volunteer?</Button>
-        </Container>
+        {volunteerInfo.isWilling?
+          <Container  className={classes.wishContainer}>
+            <Typography variant="subtitle2">Volunteering as:</Typography>
+            <Typography variant="body2"><b>Name:</b> {volunteerInfo.name}</Typography>
+            <Typography variant="body2"><b>Phone:</b> {volunteerInfo.phone}</Typography>
+            <Typography variant="body2"><b>Info:</b> {volunteerInfo.skills}</Typography>
+            {volunteerInfo.isMedico &&
+              <Typography variant="body2">I am a medical professional.</Typography>
+            }
+          </Container>
+          :
+          <Container className={classes.wishContainer}>
+            <Button color="primary" onClick={onVolunteerOpen}>Do you wish to volunteer?</Button>
+          </Container>
+        }
 
-        <List style={{width: 300}}>
-          <ListItem button>
-            <ListItemIcon><GroupWorkIcon /></ListItemIcon>
-            <ListItemText primary="Volunteer"/>
-          </ListItem>
-          <ListItem button disabled>
-            <ListItemIcon><MapIcon /></ListItemIcon>
-            <ListItemText primary="Map options"/>
-          </ListItem>
+        <Divider/>
+
+        <List style={{width: 350}}>
+          {agencyList.map((agency) => (
+            <ListItem button key={agency.agency_id}>
+              <ListItemIcon>
+              <Avatar alt="Remy Sharp" src={agency.agency_photo} />
+              </ListItemIcon>
+              <ListItemText primary={agency.agency_name} secondary={agency.agency_desc}/>
+              <div>
+              
+                <CheckBoxIcon color={agency.volunteered? "primary": ''}/>
+              
+              </div>
+            </ListItem>
+          ))}
         </List>
         <Divider />
-        <List style={{width: 250}}>
-          <ListItem button disabled>
-            <ListItemIcon><AccountCircleIcon /></ListItemIcon>
-            <ListItemText primary="Profile"/>
-          </ListItem>
-          <ListItem button disabled>
-            <ListItemIcon><SettingsIcon /></ListItemIcon>
-            <ListItemText primary="Settings"/>
-          </ListItem>
-          <Link style={{color: "inherit"}} component={RouterLink} to="/login">
-            <ListItem button>
-              <ListItemIcon><ExitToAppIcon /></ListItemIcon>
-              <ListItemText primary="Logout"/>
-            </ListItem>
-          </Link>
-        </List>
+        
       </Drawer>
 
       {/* Volenteer form */}
@@ -154,11 +177,13 @@ const VolunteerDrawer = (props) => {
           </DialogContentText>
           <TextField autoFocus margin="dense" id="vol_name" label="Name" type="text" fullWidth/>
           <br/><br/>
+          <TextField margin="dense" id="vol_phone" label="Phone number" type="text" fullWidth/>
+          <br/><br/>
           <TextField margin="dense" id="vol_info" label="Highlight your skills" type="text" fullWidth/>
           <br/><br/>
           <FormControlLabel control={<Checkbox id="vol_medico" name="checkedB" color="primary"/>} label="I am a medical professional."/>
           <br/><br/>
-          <FormControlLabel control={<Checkbox name="checkedB" color="primary"/>} label="Accept terms and conditions."/>
+          <FormControlLabel control={<Checkbox name="checkedB" color="primary"/>} label="I accept the terms and conditions."/>
           <br/><br/>
         </DialogContent>
         <DialogActions>

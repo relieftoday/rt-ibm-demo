@@ -42,7 +42,7 @@
   .locate {
     position: absolute;
     z-index: 1000;
-    right: 9px;
+    right: 23px;
     bottom: 110px;
   }
   
@@ -58,5 +58,23 @@
     z-index: 1000;
     left: 20px;
     top: 2rem;
+  }
+
+  .sos {
+    position: absolute;
+    z-index: 1000;
+    right: 20px;
+    bottom: 170px;
+  }
+  
+  .announce {
+    position: absolute;
+    z-index: 1000;
+    right: 20px;
+    bottom: 240px;
+  }
+
+  .gmnoprint {
+
   }
 }
