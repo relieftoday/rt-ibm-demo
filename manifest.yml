@@ -1,0 +1,4 @@
+applications:
+- name: RT-IBM-DEMO
+  random-route: true
+  memory: 256M
