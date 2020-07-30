@@ -23,13 +23,15 @@ import { format, formatRelative } from 'date-fns'
 import LocationSearchingOutlinedIcon from '@material-ui/icons/LocationSearchingOutlined';
 
 // Custom UI
-import {IconButton, Button, Link} from '@material-ui/core';
+import {IconButton, Button, Link, Fab} from '@material-ui/core';
 import './Map.scss';
 import { Link as RouterLink } from 'react-router-dom';
 import MenuIcon from '@material-ui/icons/Menu';
 import MapDrawer from '../../components/seekerDrawers/MapDrawer';
 import VolunteerDrawer from '../../components/seekerDrawers/VolunteerDrawer';
-
+import WarningIcon from '@material-ui/icons/Warning';
+import ContactlessIcon from '@material-ui/icons/Contactless';
+import SeekerDialogs from '../../components/seekerDialogs';
 
 const libraries = ["places"];
 
@@ -59,30 +61,54 @@ const Map = (props) => {
   const [markers, setMarkers] = React.useState([]);
   const [selected, setSelected] = React.useState(null);
 
-  // UI Related
-  const [showDrawer, setShowDrawer] = React.useState({
-    mapDrawer: false,
-    volunteerDrawer: false
+  const [snackBar, setSnackBar] = React.useState({
+    sos: false,
+    community: false
   });
 
-  const toggleDrawer = (drawer, toggleState) => (event) => {
-    setShowDrawer((currentState) => ({...currentState, [drawer]:toggleState}));
-  }
+  const [mapDialog, setMapDialog] = React.useState({
+    sos: false,
+    community: false
+  })
 
-  const onVolunteerClick = () => {
-    setShowDrawer({
-      mapDrawer: false,
-      volunteerDrawer: true
-    })
+  const [seekerActivity, setSeekerActivity] = React.useState(null);
+
+  const toggleSnackBar = (type, toggle) => {
+    setSnackBar({...snackBar, [type]: toggle});
+  }
+  
+  const toggleMapDialog = (type, toggle) => {
+    setMapDialog({...mapDialog, [type]: toggle});
   }
   
   const onMapClick = React.useCallback((event) => {
-    setMarkers(current => [...current, {
-      lat: event.latLng.lat(),
-      lng: event.latLng.lng(),
-      time: new Date()
-    }])
-  }, []);
+    console.log(snackBar);
+    if(snackBar.sos || snackBar.community) {
+      console.log("map clicked");
+      const myMarker = {
+        lat: event.latLng.lat(),
+        lng: event.latLng.lng(),
+        time: new Date(),
+        id: "customId1",
+        type: "seeker_sos"
+      }
+      setSeekerActivity(myMarker);
+      setMarkers(current => {
+        const newMarkers = current.filter((mark) => mark.id != "customId1");
+        return [...newMarkers, myMarker];
+      });
+
+      setMapDialog({
+        sos: snackBar.sos,
+        community: snackBar.community
+      })
+
+      toggleSnackBar({
+        sos: false,
+        community: false
+      });
+    }
+  }, [snackBar]);
 
   const mapRef = React.useRef();
   
@@ -104,7 +130,7 @@ const Map = (props) => {
         <img src={logo} className={"logo"} alt="Relief today"/>
         <h3 className={"logoTitle"}>Relief Today</h3>
       </div>
-      <SeekerItems onVolunteerClick={onVolunteerClick} {...props} toggleDrawer={toggleDrawer} showDrawer={showDrawer}></SeekerItems>
+      <SeekerItems {...props} snackBar={snackBar} toggleSnackBar={toggleSnackBar} mapDialog={mapDialog} toggleMapDialog={toggleMapDialog}></SeekerItems>
       <Search panTo={panTo}></Search>
       <ActionButton {...props}></ActionButton>
       <Locate panTo={panTo}></Locate>
@@ -140,15 +166,44 @@ const Map = (props) => {
 
 const SeekerItems = (props) => {
   const context = props.location.search != '' ? props.location.search.split('=')[1] : '';
+  // UI Related
+  const [showDrawer, setShowDrawer] = React.useState({
+    mapDrawer: false,
+    volunteerDrawer: false
+  });
+
+  const toggleDrawer = (drawer, toggleState) => (event) => {
+    setShowDrawer((currentState) => ({...currentState, [drawer]:toggleState}));
+  }
+
+  const showHideDrawer = (drawerObj) => (evt) => {
+    setShowDrawer((currentState) => ({...currentState, ...drawerObj}));
+  }
+
+  const onMarkSos = () => {
+    props.toggleSnackBar("sos", true);
+  }
+  
+  const onMarkCommunity = () => {
+    props.toggleSnackBar("community", true)
+  }
+
   return (
     <React.Fragment>
       { (context === "seeker") &&
         <React.Fragment>
-          <IconButton className={"menuButton"} edge="start" color="inherit" aria-label="menu" onClick={props.toggleDrawer("mapDrawer", true)}>
+          <IconButton className={"menuButton"} edge="start" color="inherit" aria-label="menu" onClick={toggleDrawer("mapDrawer", true)}>
             <MenuIcon />
           </IconButton>
-          <MapDrawer onVolunteerClick={props.onVolunteerClick} showDrawer={props.showDrawer.mapDrawer} toggleDrawer={props.toggleDrawer}></MapDrawer>
-          <VolunteerDrawer showDrawer={props.showDrawer.volunteerDrawer} toggleDrawer={props.toggleDrawer}></VolunteerDrawer>
+          <Fab color="secondary" size="medium" className={"sos"} aria-label="edit" onClick={onMarkSos}>
+            <WarningIcon />
+          </Fab>
+          <Fab color="primary" size="medium" className={"announce"} aria-label="edit" onClick={onMarkCommunity}>
+            <ContactlessIcon />
+          </Fab>
+          <MapDrawer showHideDrawer={showHideDrawer} showDrawer={showDrawer.mapDrawer} toggleDrawer={toggleDrawer}></MapDrawer>
+          <VolunteerDrawer showHideDrawer={showHideDrawer} showDrawer={showDrawer.volunteerDrawer} toggleDrawer={toggleDrawer}></VolunteerDrawer>
+          <SeekerDialogs toggleMapDialog={props.toggleMapDialog} mapDialog={props.mapDialog} toggleSnackBar={props.toggleSnackBar} snackBar={props.snackBar}></SeekerDialogs>
         </React.Fragment>
       }
     </React.Fragment>
