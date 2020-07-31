@@ -32,6 +32,14 @@ import VolunteerDrawer from '../../components/seekerDrawers/VolunteerDrawer';
 import WarningIcon from '@material-ui/icons/Warning';
 import ContactlessIcon from '@material-ui/icons/Contactless';
 import SeekerDialogs from '../../components/seekerDialogs';
+import API from '../../axios/AxiosInstance';
+import pin1 from '../../assets/pins/pin1.png';
+import pin2 from '../../assets/pins/pin2.png';
+import pin3 from '../../assets/pins/pin3.png';
+import pin4 from '../../assets/pins/pin4.png';
+import pin5 from '../../assets/pins/pin5.png';
+import pin6 from '../../assets/pins/pin6.png';
+import pin7 from '../../assets/pins/pin7.png';
 
 const libraries = ["places"];
 
@@ -73,6 +81,17 @@ const Map = (props) => {
 
   const [seekerActivity, setSeekerActivity] = React.useState(null);
 
+  React.useEffect(() => {
+    API.get('/activity/all')
+    .then((res) => {
+      setMarkers(res.data);
+    })
+    .catch((error) => {
+      console.log(error);
+      // 
+    })
+  }, []);
+
   const toggleSnackBar = (type, toggle) => {
     setSnackBar({...snackBar, [type]: toggle});
   }
@@ -80,21 +99,79 @@ const Map = (props) => {
   const toggleMapDialog = (type, toggle) => {
     setMapDialog({...mapDialog, [type]: toggle});
   }
+
+  const onMarkerSubmit = (markerObj) => {
+    const {id, ...finalObj} = {...seekerActivity, ...markerObj};
+    console.log(finalObj);
+
+    // make API CALL here
+    API.post('/activity/create', finalObj)
+    .then((res) => {
+      console.log(res);
+      setMarkers((current) => {
+        const newMarkers = current.map(mark => {
+          if(mark.id === "customId1") {
+            return res.data;
+          }
+          return mark;
+        });
+
+        return newMarkers;
+      });
+      setSeekerActivity(null);
+
+    })
+    .catch((error) => {
+      console.log(error);
+
+      // just reload the page
+      window.location.reload();
+    })
+  }
+
+  const onMarkerCancel = () => {
+    setMarkers((current) => {
+      const newMarkers = current.filter(mark => mark.id !== "customId1");
+      console.log(newMarkers);
+      return newMarkers;
+    });
+    setSeekerActivity(null);
+  }
+
+  const getIcon = (marker) => {
+    let icon = pin7;
+    if(marker.activityBy === "seeker") {
+      icon = pin1;
+    } else if (marker.activityBy === "community") {
+      icon = pin2;
+    } else {
+      if(marker.provider.activityType === "Food") {
+        icon = pin3;
+      } else if (marker.provider.activityType === "Water") {
+        icon = pin4;
+      } else if (marker.provider.activityType === "Medical") {
+        icon = pin5;
+      } else if (marker.provider.activityType === "Sanitation") {
+        icon = pin6;
+      } else if (marker.provider.activityType === "Shelter") {
+        icon = pin7;
+      }
+    }
+
+    return icon;
+  }
   
   const onMapClick = React.useCallback((event) => {
-    console.log(snackBar);
     if(snackBar.sos || snackBar.community) {
-      console.log("map clicked");
       const myMarker = {
         lat: event.latLng.lat(),
         lng: event.latLng.lng(),
-        time: new Date(),
+        time: new Date().toISOString(),
         id: "customId1",
-        type: "seeker_sos"
       }
       setSeekerActivity(myMarker);
       setMarkers(current => {
-        const newMarkers = current.filter((mark) => mark.id != "customId1");
+        const newMarkers = current.filter((mark) => mark.id !== "customId1");
         return [...newMarkers, myMarker];
       });
 
@@ -130,7 +207,8 @@ const Map = (props) => {
         <img src={logo} className={"logo"} alt="Relief today"/>
         <h3 className={"logoTitle"}>Relief Today</h3>
       </div>
-      <SeekerItems {...props} snackBar={snackBar} toggleSnackBar={toggleSnackBar} mapDialog={mapDialog} toggleMapDialog={toggleMapDialog}></SeekerItems>
+      <SeekerItems {...props} snackBar={snackBar} toggleSnackBar={toggleSnackBar} mapDialog={mapDialog} toggleMapDialog={toggleMapDialog}
+      onMarkerCancel={onMarkerCancel} onMarkerSubmit={onMarkerSubmit}></SeekerItems>
       <Search panTo={panTo}></Search>
       <ActionButton {...props}></ActionButton>
       <Locate panTo={panTo}></Locate>
@@ -143,15 +221,17 @@ const Map = (props) => {
         onClick={onMapClick}
         onLoad={onMapLoad}
       >
-        {markers.map(marker => (
-          <Marker key={marker.time.toISOString()} position={{lat: marker.lat, lng: marker.lng}}
+        {markers.map(marker => {
+          let icon = getIcon(marker);
+          return (
+          <Marker key={marker.time} position={{lat: marker.lat, lng: marker.lng}}
           icon= {{
-            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+            url: icon
           }}
           onClick={() => {
             setSelected(marker);
           }}></Marker> 
-        ))}
+        )})}
         {selected? (
           <InfoWindow position={{lat: selected.lat, lng: selected.lng}} onCloseClick={() => setSelected(null)} options={{pixelOffset: {height: -35}}}>
             <div>
@@ -165,7 +245,7 @@ const Map = (props) => {
 }
 
 const SeekerItems = (props) => {
-  const context = props.location.search != '' ? props.location.search.split('=')[1] : '';
+  const context = props.location.search !== '' ? props.location.search.split('=')[1] : '';
   // UI Related
   const [showDrawer, setShowDrawer] = React.useState({
     mapDrawer: false,
@@ -203,7 +283,8 @@ const SeekerItems = (props) => {
           </Fab>
           <MapDrawer showHideDrawer={showHideDrawer} showDrawer={showDrawer.mapDrawer} toggleDrawer={toggleDrawer}></MapDrawer>
           <VolunteerDrawer showHideDrawer={showHideDrawer} showDrawer={showDrawer.volunteerDrawer} toggleDrawer={toggleDrawer}></VolunteerDrawer>
-          <SeekerDialogs toggleMapDialog={props.toggleMapDialog} mapDialog={props.mapDialog} toggleSnackBar={props.toggleSnackBar} snackBar={props.snackBar}></SeekerDialogs>
+          <SeekerDialogs toggleMapDialog={props.toggleMapDialog} mapDialog={props.mapDialog} toggleSnackBar={props.toggleSnackBar} snackBar={props.snackBar}
+          onMarkerCancel={props.onMarkerCancel} onMarkerSubmit={props.onMarkerSubmit}></SeekerDialogs>
         </React.Fragment>
       }
     </React.Fragment>
@@ -211,7 +292,7 @@ const SeekerItems = (props) => {
 }
 
 const ActionButton = (props) => {
-  const context = props.location.search != '' ? props.location.search.split('=')[1] : '';
+  const context = props.location.search !== '' ? props.location.search.split('=')[1] : '';
   return (
     <div className="cta">
       { (context === "provider") &&

@@ -1,12 +1,10 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Drawer, Divider, List, ListItem, ListItemIcon, ListItemText, Link } from '@material-ui/core';
+import { Drawer, Divider, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import { AppBar, Button, Toolbar, IconButton, Typography } from '@material-ui/core';
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Snackbar, TextField} from '@material-ui/core';
-import MuiAlert from '@material-ui/lab/Alert';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField} from '@material-ui/core';
 import { FormControlLabel, Checkbox } from '@material-ui/core';
 import { Avatar, Container } from '@material-ui/core';
-import CheckIcon from '@material-ui/icons/Check';
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import MenuIcon from '@material-ui/icons/Menu';
 import CloseIcon from '@material-ui/icons/Close';
@@ -90,14 +88,6 @@ const VolunteerDrawer = (props) => {
       communityDialog: false
     })
   }
-
-  const handleClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    props.hideSnackbar(false);
-  };
 
   let agencyList = [
     {agency_id:"1", agency_name: "Purple cross NGO", agency_desc:"We are an agency that distributes food.", agency_photo:"https://picsum.photos/id/10/200", volunteered: false},
