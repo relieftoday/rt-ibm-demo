@@ -2,11 +2,22 @@ const express = require('express');
 const routes = require('./server/api/routes');
 const path = require('path');
 const bodyParser = require('body-parser');
-var mongoose = require('mongoose');
-var { dburl } = require('./server/config');
+const mongoose = require('mongoose');
+const { dburl, dburl_prod } = require('./server/config');
+const cors = require('cors');
 
 
 const app = express();
+
+// cors
+// app.use(cors());
+
+app.use((req, res, next) => {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header("Access-Control-Allow-Methods", "GET, PUT, POST, DELETE");
+  res.header("Access-Control-Allow-Headers", "Content-Type");
+  next();
+})
 
 // api
 app.use(bodyParser.json());
@@ -17,7 +28,8 @@ app.use('/api', routes);
 app.use(express.static('build'));
 
 // Db connect
-// mongoose.connect(dburl, { useNewUrlParser: true, useUnifiedTopology: true });
+const db = process.env.NODE_ENV === 'production' ? dburl_prod : dburl;
+mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
 
 // let PORT = process.env.NODE_ENV === 'production'? 80 : 3001;
 let PORT = 8080;

@@ -8,7 +8,7 @@ import EventIcon from '@material-ui/icons/Event';
 import MapIcon from '@material-ui/icons/Map';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
-import { Route, Link as RouterLink } from 'react-router-dom';
+import { Route } from 'react-router-dom';
 
 import EventsList from './ActivitiesList';
 import AddEvent from './AddActivity';

@@ -33,6 +33,14 @@ const GetOne = (id) => {
   })
 }
 
+const GetProviderActivities = (providerId) => {
+  return new Promise((resolve, reject) => {
+    Activity.find({"provider.providerId": providerId}, (err, info) => {
+      err? reject(err) : resolve(info);
+    })
+  })
+}
+
 const Delete = (id) => {
   return new Promise((resolve, reject) => {
     Activity.deleteOne({_id: id}, (err, info) => {
@@ -46,5 +54,6 @@ module.exports = {
   GetAll,
   GetType,
   GetOne,
-  Delete
+  Delete,
+  GetProviderActivities
 }

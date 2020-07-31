@@ -1,9 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { AppBar, Button, Drawer, Icon, IconButton, Toolbar, Typography } from '@material-ui/core';
-import { Divider, List, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import InboxIcon from '@material-ui/icons/MoveToInbox';
-import MailIcon from '@material-ui/icons/Mail';
+import { Divider, List, Link, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 import MenuIcon from '@material-ui/icons/Menu';
 import logo from '../assets/marker.png';
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -11,6 +9,14 @@ import EventIcon from '@material-ui/icons/Event';
 import MapIcon from '@material-ui/icons/Map';
 import NotificationsActiveIcon from '@material-ui/icons/NotificationsActive';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import SettingsIcon from '@material-ui/icons/Settings';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import LocalActivityIcon from '@material-ui/icons/LocalActivity';
+import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
+import BuildIcon from '@material-ui/icons/Build';
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt';
+import GroupWorkIcon from '@material-ui/icons/GroupWork';
+import {Link as RouterLink} from 'react-router-dom';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -35,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
   logo: {
     width: "24px",
-    marginRight: "10px"
+    marginRight: "20px"
   },
   button: {
     color: '#9e9e9e',
@@ -57,10 +63,6 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     padding: "10px 10px 10px 20px"
   },
-  logo: {
-    width: "24px",
-    marginRight: "20px"
-  },
   logoTitle: {
     display: "inline",
     color: "#9e9e9e"
@@ -81,21 +83,51 @@ const DrawerItems = (props) => {
         <h3 className={"logoTitle"}>Relief Today</h3>
       </div>
       <List>
-        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+        <Link style={{color: "inherit"}} component={RouterLink} to="/dashboard">
+          <ListItem button>
+            <ListItemIcon><DashboardIcon /></ListItemIcon>
+            <ListItemText primary="Dashboard" />
           </ListItem>
-        ))}
+        </Link>
+        <Link style={{color: "inherit"}} component={RouterLink} to="/activities">
+          <ListItem button>
+            <ListItemIcon><LocalActivityIcon /></ListItemIcon>
+            <ListItemText primary="Activities" />
+          </ListItem>
+        </Link>
+        <ListItem button disabled>
+          <ListItemIcon><FormatListBulletedIcon /></ListItemIcon>
+          <ListItemText primary="Task Board" />
+        </ListItem>
+        <ListItem button disabled>
+          <ListItemIcon><BuildIcon /></ListItemIcon>
+          <ListItemText primary="Inventory Management" />
+        </ListItem>
+        <ListItem button disabled>
+          <ListItemIcon><GroupWorkIcon /></ListItemIcon>
+          <ListItemText primary="Community Markers" />
+        </ListItem>
       </List>
       <Divider />
       <List>
-        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-          <ListItem button key={text}>
-            <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-            <ListItemText primary={text} />
+      <ListItem button disabled>
+          <ListItemIcon><AccountCircleIcon /></ListItemIcon>
+          <ListItemText primary="Profile"/>
+        </ListItem>
+        <ListItem button disabled>
+          <ListItemIcon><SettingsIcon /></ListItemIcon>
+          <ListItemText primary="Settings"/>
+        </ListItem>
+        <ListItem button disabled>
+          <ListItemIcon><PeopleAltIcon /></ListItemIcon>
+          <ListItemText primary="Manage Users" />
+        </ListItem>
+        <Link style={{color: "inherit"}} component={RouterLink} to="/login">
+          <ListItem button>
+            <ListItemIcon><ExitToAppIcon /></ListItemIcon>
+            <ListItemText primary="Logout"/>
           </ListItem>
-        ))}
+        </Link>
       </List>
     </div>
   )
@@ -126,28 +158,16 @@ export default function ProviderLayout(props) {
           <Typography variant="h6" className={classes.title}>
             Relief Today
           </Typography>
-          <Button
-            size="small"
-            className={classes.button}
-            startIcon={<DashboardIcon />}>
-            Dashboard
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            className={classes.button2}
-            startIcon={<EventIcon />}>
-            Activities
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            size="small"
-            className={classes.button2}
-            startIcon={<MapIcon />}>
-            Map
-          </Button>
+          <Link component={RouterLink} to="/?context=provider">
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              className={classes.button2}
+              startIcon={<MapIcon />}>
+              Map
+            </Button>
+          </Link>
           <div className={classes.grow}></div>
           <IconButton aria-label="delete">
             <NotificationsActiveIcon/>

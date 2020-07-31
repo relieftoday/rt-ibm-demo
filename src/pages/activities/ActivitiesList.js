@@ -21,6 +21,7 @@ import FilterListIcon from '@material-ui/icons/FilterList';
 import {Breadcrumbs, Fab} from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import { Link as RouterLink } from 'react-router-dom';
+import API from '../../axios/AxiosInstance';
 
 function createData(name, calories, fat, carbs, protein) {
   return { name, calories, fat, carbs, protein };
@@ -69,11 +70,11 @@ function stableSort(array, comparator) {
 }
 
 const headCells = [
-  { id: 'name', numeric: false, disablePadding: true, label: 'Dessert (100g serving)' },
-  { id: 'calories', numeric: true, disablePadding: false, label: 'Calories' },
-  { id: 'fat', numeric: true, disablePadding: false, label: 'Fat (g)' },
-  { id: 'carbs', numeric: true, disablePadding: false, label: 'Carbs (g)' },
-  { id: 'protein', numeric: true, disablePadding: false, label: 'Protein (g)' },
+  { id: 'name', numeric: false, disablePadding: true, label: 'Name' },
+  { id: 'calories', numeric: false, disablePadding: false, label: 'Location' },
+  { id: 'fat', numeric: false, disablePadding: false, label: 'Date/Time' },
+  { id: 'carbs', numeric: false, disablePadding: false, label: 'Activity Type' },
+  { id: 'protein', numeric: false, disablePadding: false, label: 'Volenteers?' },
 ];
 
 function EnhancedTableHead(props) {
@@ -81,6 +82,15 @@ function EnhancedTableHead(props) {
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
+
+  const [activities, setActivities] = React.useState([]);
+
+  React.useEffect(() => {
+    API.get('/activity/1')
+    .then(res => {
+      console.log(res.data);
+    })
+  }, [])
 
   return (
     <TableHead>

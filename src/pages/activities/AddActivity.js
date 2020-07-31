@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { Breadcrumbs, Button, Container, Link, TextField, TextareaAutosize, Typography } from '@material-ui/core';
-import { FormControl, FormGroup, FormLabel, FormHelperText, FormControlLabel, InputLabel, Input, Checkbox} from '@material-ui/core';
+import { FormControl, FormGroup, FormLabel, FormHelperText, FormControlLabel, InputLabel, Input, Checkbox, Switch} from '@material-ui/core';
 import DateFnsUtils from '@date-io/date-fns';
 import Location from '../../components/location'
 import {
@@ -10,6 +10,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import { Link as RouterLink } from 'react-router-dom';
+import API from '../../axios/AxiosInstance';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -51,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-export default function AddEvent() {
+export default function AddEvent(props) {
   const classes = useStyles();
   const [state, setState] = React.useState({
     activity_name: "",
@@ -60,11 +61,12 @@ export default function AddEvent() {
     activity_lat: '',
     activity_lng: '',
     activity_date: new Date(),
-    type_food: false,
-    type_medical: false,
-    type_shelter: false,
-    type_sanitation: false,
-    type_water: false,
+    food: false,
+    medical: false,
+    shelter: false,
+    sanitation: false,
+    water: false,
+    needVolunteers: false
   });
 
   const nameChangeHandler = (event) => {
@@ -84,15 +86,49 @@ export default function AddEvent() {
   };
 
   const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
+    console.log(event.target.checked);
+    console.log(event.target.name);
+    setState((currentState) => ({ ...currentState, [event.target.name]: event.target.checked }));
   };
 
   const submitHandler = (event) => {
-    console.log(state);
+    let activityType = '';
+    if(state.food) {
+      activityType = "Food";
+    } else if(state.medical) {
+      activityType = "Medical"
+    } else if(state.sanitation) {
+      activityType = "Sanitation"
+    } else if(state.water) {
+      activityType = "Water"
+    } else if(state.shelter) {
+      activityType = "Shelter"
+    }
+    
+    let markerObj = {
+      lat: state.activity_lat,
+      lng: state.activity_lng,
+      activityBy: "provider",
+      time: new Date().toISOString(),
+      provider: {
+        address: state.activity_address,
+        providerName: "Purple Cross NGO for Disaster Management",
+        providerId: 1,
+        activityType,
+        needVolunteers: state.needVolunteers,
+        activityName: state.activity_name,
+        description: state.activity_desc
+      }
+    }
+
+    API.post('/activity/create', markerObj)
+    .then((res) => {
+      props.history.push("/activities");
+    })
   }
 
   const onLocationClick = (lat, lng) => {
-    setState({...state, activity_lat: lat, activity_lng:lng});
+    setState((currentState) => ({...currentState, activity_lat: lat, activity_lng:lng}));
   }
 
   return (
@@ -162,23 +198,23 @@ export default function AddEvent() {
             <FormLabel component="legend">Activity type</FormLabel>
             <FormGroup>
               <FormControlLabel
-                control={<Checkbox checked={state.type_food} onChange={handleChange} name="type_food" />}
+                control={<Checkbox checked={state.food} onChange={handleChange} name="food" />}
                 label="Food drive"
               />
               <FormControlLabel
-                control={<Checkbox checked={state.type_medical} onChange={handleChange} name="type_medical" />}
+                control={<Checkbox checked={state.medical} onChange={handleChange} name="medical" />}
                 label="Medical drive"
               />
               <FormControlLabel
-                control={<Checkbox checked={state.type_sanitation} onChange={handleChange} name="type_sanitation" />}
+                control={<Checkbox checked={state.sanitation} onChange={handleChange} name="sanitation" />}
                 label="Sanitation drive"
               />
               <FormControlLabel
-                control={<Checkbox checked={state.type_shelter} onChange={handleChange} name="type_shelter" />}
+                control={<Checkbox checked={state.shelter} onChange={handleChange} name="shelter" />}
                 label="Shelter drive"
               />
               <FormControlLabel
-                control={<Checkbox checked={state.type_water} onChange={handleChange} name="type_water" />}
+                control={<Checkbox checked={state.water} onChange={handleChange} name="water" />}
                 label="Water drive"
               />
             </FormGroup>
@@ -193,6 +229,14 @@ export default function AddEvent() {
           <div className={classes.locationContainer}>
             <Location onClickHandler={onLocationClick}/>
           </div>
+          <br/><br/>
+          <FormControlLabel control={<Switch
+            checked={state.needVolunteers}
+            onChange={handleChange}
+            color="primary"
+            name="needVolunteers"
+            inputProps={{ 'aria-label': 'primary checkbox' }}
+          />} label="Accept volunteers"></FormControlLabel>
           <br/><br/>
           <Button variant="contained" color="secondary" onClick={submitHandler}>
             Add activity
