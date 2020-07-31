@@ -31,8 +31,8 @@ app.use(express.static('build'));
 const db = process.env.NODE_ENV === 'production' ? dburl_prod : dburl;
 mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
 
-// let PORT = process.env.NODE_ENV === 'production'? 80 : 3001;
-let PORT = 8080;
+let PORT = process.env.NODE_ENV === 'production'? 80 : 3001;
+// let PORT = 8080;
 
 app.listen(PORT, () => {
   console.log(`Running server in ${process.env.NODE_ENV} on port ${PORT}`);
