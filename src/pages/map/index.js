@@ -40,6 +40,9 @@ import pin4 from '../../assets/pins/pin4.png';
 import pin5 from '../../assets/pins/pin5.png';
 import pin6 from '../../assets/pins/pin6.png';
 import pin7 from '../../assets/pins/pin7.png';
+import pin8 from '../../assets/pins/pin8.png';
+import pin9 from '../../assets/pins/pin9.png';
+import pin10 from '../../assets/pins/pin10.png';
 
 const libraries = ["places"];
 
@@ -141,14 +144,14 @@ const Map = (props) => {
   const getIcon = (marker) => {
     let icon = pin7;
     if(marker.activityBy === "seeker") {
-      icon = pin1;
+      icon = pin10;
     } else if (marker.activityBy === "community") {
-      icon = pin2;
-    } else {
+      icon = pin9;
+    } else if (marker.activityBy === "provider") {
       if(marker.provider.activityType === "Food") {
-        icon = pin3;
-      } else if (marker.provider.activityType === "Water") {
         icon = pin4;
+      } else if (marker.provider.activityType === "Water") {
+        icon = pin2;
       } else if (marker.provider.activityType === "Medical") {
         icon = pin5;
       } else if (marker.provider.activityType === "Sanitation") {
@@ -156,6 +159,8 @@ const Map = (props) => {
       } else if (marker.provider.activityType === "Shelter") {
         icon = pin7;
       }
+    } else {
+      icon = pin1;
     }
 
     return icon;

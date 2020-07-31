@@ -11,7 +11,7 @@ const Routes = (
   <Switch>
     <Route path={"/login"} component={Login}/>
     <Route path={"/volunteer"} render={() => <h1>Volunteer</h1>}/>
-    <Route path={"/activities"} component={Activities}/>
+    <ProviderRoute path={"/activities"} component={Activities}></ProviderRoute>
     <ProviderRoute path={"/dashboard"} component={Dashboard}></ProviderRoute>
     <Route path={"/"} exact component={Map}/>
     <Route path={"/page3"} render={() => <h1>PAGE 3</h1>}/>

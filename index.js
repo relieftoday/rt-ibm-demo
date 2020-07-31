@@ -3,7 +3,7 @@ const routes = require('./server/api/routes');
 const path = require('path');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
-const { dburl, dburl_prod } = require('./server/config');
+const { dburl, dburl_prod } = require('./config');
 const cors = require('cors');
 
 
@@ -29,7 +29,8 @@ app.use(express.static('build'));
 
 // Db connect
 const db = process.env.NODE_ENV === 'production' ? dburl_prod : dburl;
-mongoose.connect("mongodb://vrathore42:vrathore42password@ds235732.mlab.com:35732/rt-db-demo", { useNewUrlParser: true, useUnifiedTopology: true });
+console.log(dburl_prod);
+mongoose.connect(dburl_prod, { useNewUrlParser: true, useUnifiedTopology: true });
 
 let PORT = process.env.NODE_ENV === 'production'? 80 : 3001;
 // let PORT = 8080;
