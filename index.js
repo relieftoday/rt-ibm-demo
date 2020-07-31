@@ -29,7 +29,7 @@ app.use(express.static('build'));
 
 // Db connect
 const db = process.env.NODE_ENV === 'production' ? dburl_prod : dburl;
-mongoose.connect(db, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect("mongodb://vrathore42:vrathore42password@ds235732.mlab.com:35732/rt-db-demo", { useNewUrlParser: true, useUnifiedTopology: true });
 
 let PORT = process.env.NODE_ENV === 'production'? 80 : 3001;
 // let PORT = 8080;
