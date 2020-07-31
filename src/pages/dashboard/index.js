@@ -32,6 +32,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
+    padding: "30px 0px"
   },
   summaryItem: {
     flexGrow: 1,
@@ -44,42 +45,42 @@ const useStyles = makeStyles((theme) => ({
 const Dashboard = () => {
   const classes = useStyles();
   const communityNotifications = [
-    {comm_id: 1, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1010/200"},
-    {comm_id: 2, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1011/200"},
-    {comm_id: 3, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1012/200"},
-    {comm_id: 4, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1013/200"},
-    {comm_id: 5, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1014/200"},
-    {comm_id: 6, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1015/200"},
-    {comm_id: 7, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1016/200"},
-    {comm_id: 8, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1017/200"},
-    {comm_id: 9, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1018/200"},
-    {comm_id: 10, comm_name: "Rajesh Reddy from Dharavi", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1019/200"},
+    {comm_id: 1, comm_name: "Rajesh Reddy from Hanuman Nagar", comm_location: "Need medical attention for 20 people", comm_url: "https://picsum.photos/id/1010/200"},
+    {comm_id: 2, comm_name: "Venkatesh Rao from Begumpet", comm_location: "Need food for 80 people", comm_url: "https://picsum.photos/id/1011/200"},
+    {comm_id: 3, comm_name: "Abdul Faisal from Toli Chowki", comm_location: "Need shelter for 35 people", comm_url: "https://picsum.photos/id/1012/200"},
+    {comm_id: 4, comm_name: "John Gonzalves from Vivek Nagar", comm_location: "Need immidiate evacualtion for 15 people", comm_url: "https://picsum.photos/id/1013/200"},
+    {comm_id: 5, comm_name: "Aditya Babu from Shamshabad", comm_location: "Need food for 45 people", comm_url: "https://picsum.photos/id/1014/200"},
+    {comm_id: 6, comm_name: "Asnaa Ali from Jubilee Hills", comm_location: "Need food and water for 26 people", comm_url: "https://picsum.photos/id/1015/200"},
+    {comm_id: 7, comm_name: "Laxman from Kaveri Hills", comm_location: "Need medical attention for 34 people", comm_url: "https://picsum.photos/id/1016/200"},
+    {comm_id: 8, comm_name: "Tina Vijayan from Kondapur", comm_location: "Need shelter for 54 people", comm_url: "https://picsum.photos/id/1017/200"},
+    {comm_id: 9, comm_name: "Mansi Mishra from Vidhura Vihar", comm_location: "Need first aid for 35 people", comm_url: "https://picsum.photos/id/1018/200"},
+    {comm_id: 10, comm_name: "Sunil Reddy from Shaikpet", comm_location: "Need food for 44 people", comm_url: "https://picsum.photos/id/1019/200"},
   ]
   
   const volunteers = [
-    {comm_id: 1, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1020/200"},
-    {comm_id: 2, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1021/200"},
-    {comm_id: 3, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1022/200"},
-    {comm_id: 4, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1023/200"},
-    {comm_id: 5, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1024/200"},
-    {comm_id: 6, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1025/200"},
-    {comm_id: 7, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1026/200"},
-    {comm_id: 8, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1027/200"},
-    {comm_id: 9, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1028/200"},
-    {comm_id: 10, comm_name: "Vivek Rao", comm_location: "Civil engineer. Medico.", comm_url: "https://picsum.photos/id/1029/200"},
+    {comm_id: 1, comm_name: "Vivek Rajvendra", comm_location: "Engineering", comm_url: "https://picsum.photos/id/1020/200"},
+    {comm_id: 2, comm_name: "Ajay Nagal", comm_location: "Nurse", comm_url: "https://picsum.photos/id/1021/200"},
+    {comm_id: 3, comm_name: "Apurva Sirkar", comm_location: "Civil engineer", comm_url: "https://picsum.photos/id/1022/200"},
+    {comm_id: 4, comm_name: "Christopher Joseph", comm_location: "Trained in emergency procedures", comm_url: "https://picsum.photos/id/1023/200"},
+    {comm_id: 5, comm_name: "Sahil Sood", comm_location: "Pediatrician", comm_url: "https://picsum.photos/id/1024/200"},
+    {comm_id: 6, comm_name: "Inderjit Singh", comm_location: "Electrical engineer", comm_url: "https://picsum.photos/id/1025/200"},
+    {comm_id: 7, comm_name: "Chandan Sharma", comm_location: "Medical technician", comm_url: "https://picsum.photos/id/1026/200"},
+    {comm_id: 8, comm_name: "Payal Reddy", comm_location: "Bio medical engineering", comm_url: "https://picsum.photos/id/1027/200"},
+    {comm_id: 9, comm_name: "Lobo D'Souza", comm_location: "Military evacuations", comm_url: "https://picsum.photos/id/1028/200"},
+    {comm_id: 10, comm_name: "Fahad Masud", comm_location: "Cadiologist", comm_url: "https://picsum.photos/id/1029/200"},
   ]
   
   const partnerOrgs = [
-    {comm_id: 1, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1030/200"},
-    {comm_id: 2, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1031/200"},
-    {comm_id: 3, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1032/200"},
-    {comm_id: 4, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1033/200"},
-    {comm_id: 5, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1034/200"},
-    {comm_id: 6, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1035/200"},
-    {comm_id: 7, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1036/200"},
-    {comm_id: 8, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1037/200"},
-    {comm_id: 9, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1038/200"},
-    {comm_id: 10, comm_name: "Blur Plus aid agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1039/200"},
+    {comm_id: 1, comm_name: "Blue Plus Aid Agency", comm_location: "Specialize in fire fighting and medical assistance", comm_url: "https://picsum.photos/id/1030/200"},
+    {comm_id: 2, comm_name: "Hyderabad Food Packets Agency", comm_location: "Specialize in food distribution ", comm_url: "https://picsum.photos/id/1031/200"},
+    {comm_id: 3, comm_name: "Green Circle Medical Aid", comm_location: "Specialize in medical assistance", comm_url: "https://picsum.photos/id/1032/200"},
+    {comm_id: 4, comm_name: "All Childs Education org", comm_location: "Specialize in education", comm_url: "https://picsum.photos/id/1033/200"},
+    {comm_id: 5, comm_name: "Disaster Roofs Org", comm_location: "Specialize in setting up temporary shelters", comm_url: "https://picsum.photos/id/1034/200"},
+    {comm_id: 6, comm_name: "Relief Food Supply", comm_location: "Specialize in food distribution", comm_url: "https://picsum.photos/id/1035/200"},
+    {comm_id: 7, comm_name: "Blur Circle Aid agency", comm_location: "Specialize in medical assistance", comm_url: "https://picsum.photos/id/1036/200"},
+    {comm_id: 8, comm_name: "Relief Evacuation NGO", comm_location: "Specialize in emergency evacuation", comm_url: "https://picsum.photos/id/1037/200"},
+    {comm_id: 9, comm_name: "Central Food Distributors", comm_location: "Specialize in food distribution", comm_url: "https://picsum.photos/id/1038/200"},
+    {comm_id: 10, comm_name: "Immediate Shelter Corps", comm_location: "Specialize in setting up temporary shelters", comm_url: "https://picsum.photos/id/1039/200"},
   ]
 
   return (

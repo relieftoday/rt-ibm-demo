@@ -234,17 +234,54 @@ const Map = (props) => {
             url: icon
           }}
           onClick={() => {
+            console.log(marker);
             setSelected(marker);
           }}></Marker> 
         )})}
         {selected? (
           <InfoWindow position={{lat: selected.lat, lng: selected.lng}} onCloseClick={() => setSelected(null)} options={{pixelOffset: {height: -35}}}>
-            <div>
-              <h2>My marker</h2>
-              <p>On: {formatRelative(selected.time, new Date())}</p>
-            </div>
+            <InfoPopup marker={selected}></InfoPopup>
           </InfoWindow>) : null}
       </GoogleMap>
+    </div>
+  )
+}
+
+const InfoPopup = (props) => {
+  return (
+    <div>
+      {props.marker.activityBy === "seeker" && 
+        <div>
+          <h2>{props.marker.seeker.count + " person(s) in need."}</h2>
+          {props.marker.seeker.isMedical && <h4>This is a medical Emergency</h4>}
+          <p><b>Name: </b>{props.marker.seeker.seekerName}</p>
+          <p><b>Ph: </b>{props.marker.seeker.seekerPhone}</p>
+          <p><b>Date: </b>{format(new Date(props.marker.time), "PPPPpp")}</p>
+        </div>
+      }
+      {props.marker.activityBy === "community" && 
+        <div>
+          <h2>{"Community of " + props.marker.community.count + " in need."}</h2>
+          <p><b>Name: </b>{props.marker.community.communityName}</p>
+          <p>{props.marker.community.communityNeeds}</p>
+          <p><b>Ph: </b>{props.marker.community.communityPhone}</p>
+          <p><b>Date: </b>{format(new Date(props.marker.time), "PPPPpp")}</p>
+        </div>
+      }
+      {props.marker.activityBy === "provider" && 
+        <div>
+          <h2>{props.marker.provider.activityName}</h2>
+          <p>{props.marker.provider.description}</p>
+          <p>{props.marker.provider.address}</p>
+          <p></p>
+          <br/>
+          <p><b>Posted by: </b>{props.marker.provider.providerName}</p>
+          <p><b>Date: </b>{format(new Date(props.marker.time), "PPPPpp")}</p>
+          {props.marker.provider.needVolunteers &&
+            <p>Volunteer for this <a href="#">here</a></p>
+          }
+        </div>
+      }
     </div>
   )
 }
