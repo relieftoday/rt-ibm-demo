@@ -105,7 +105,7 @@ const DrawerItems = (props) => {
         </ListItem>
         <ListItem button disabled>
           <ListItemIcon><GroupWorkIcon /></ListItemIcon>
-          <ListItemText primary="Community Markers" />
+          <ListItemText primary="Community Reps" />
         </ListItem>
       </List>
       <Divider />

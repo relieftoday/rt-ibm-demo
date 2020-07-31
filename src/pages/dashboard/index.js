@@ -138,7 +138,7 @@ const Dashboard = () => {
       <Grid container>
         <Grid className={classes.cardContainer} item sm={6} xs={12}>
           <Card className={classes.card}>
-            <CardHeader className={classes.cardHeader} title="Notifications from Community Markers" subheader="Please approve before the markers can be shown on the map"/>
+            <CardHeader className={classes.cardHeader} title="Notifications from Community Reps" subheader="Please approve before the markers can be shown on the map"/>
             <CardContent className={classes.cardContent}>
               <List className={classes.list}>
                 {communityNotifications.map((comm) => (
