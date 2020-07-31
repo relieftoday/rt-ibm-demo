@@ -153,9 +153,9 @@ const Map = (props) => {
       } else if (marker.provider.activityType === "Water") {
         icon = pin2;
       } else if (marker.provider.activityType === "Medical") {
-        icon = pin5;
-      } else if (marker.provider.activityType === "Sanitation") {
         icon = pin6;
+      } else if (marker.provider.activityType === "Sanitation") {
+        icon = pin8;
       } else if (marker.provider.activityType === "Shelter") {
         icon = pin7;
       }
