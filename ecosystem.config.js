@@ -1,7 +1,7 @@
 module.exports = {
   apps : [
     {
-      name: "rt-webapp",
+      name: "rt-demo",
       script: "./index.js",
       watch: true,
       env: {
